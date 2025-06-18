@@ -1,9 +1,8 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreRealisticArmStamina", "MoreRealisticArmStamina.csproj", "{6C2A013A-B579-4A92-835A-439328141EBA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterArmStamina", "BetterArmStamina.csproj", "{6C2A013A-B579-4A92-835A-439328141EBA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
