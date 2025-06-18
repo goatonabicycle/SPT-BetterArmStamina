@@ -1,1 +1,1 @@
-# MoreRealisticArmStamina
+# BetterArmStamina
