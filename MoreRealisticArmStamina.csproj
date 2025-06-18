@@ -77,6 +77,12 @@
         <SpecificVersion>False</SpecificVersion>
         <HintPath>..\..\EscapeFromTarkov_Data\Managed\UnityEngine.UI.dll</HintPath>
     </Reference>
+    <Reference Include="AnimationSystem.Types">
+        <HintPath>..\..\EscapeFromTarkov_Data\Managed\AnimationSystem.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+        <HintPath>..\..\EscapeFromTarkov_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
 </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
