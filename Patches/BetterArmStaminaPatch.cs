@@ -100,7 +100,7 @@ namespace BetterArmStamina.Patches
             {
                 EPlayerPose.Prone => (Plugin.ProneAdsDrainPercent?.Value ?? 30f) / 100f,
                 EPlayerPose.Duck => (Plugin.CrouchAdsDrainPercent?.Value ?? 60f) / 100f,
-                _ => 1.0f
+                _ => (Plugin.StandingStaminaDrain?.Value ?? 100f) / 100f
             };
         }
 

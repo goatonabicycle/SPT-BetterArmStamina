@@ -6,7 +6,7 @@ using System;
 
 namespace BetterArmStamina
 {
-    [BepInPlugin("goatonabicycle.BetterArmStamina", "BetterArmStamina", "1.1.0")]
+    [BepInPlugin("goatonabicycle.BetterArmStamina", "BetterArmStamina", "1.0.0")]
     public class Plugin : BaseUnityPlugin
     {
         public static ManualLogSource? LogSource;
@@ -15,6 +15,7 @@ namespace BetterArmStamina
         public static ConfigEntry<float>? ProneAdsDrainPercent;
         public static ConfigEntry<float>? CrouchAdsDrainPercent;
         public static ConfigEntry<float>? MountedOrBipodAdsDrainPercent;
+        public static ConfigEntry<float>? StandingStaminaDrain;
 
         private void Awake()
         {
@@ -49,11 +50,18 @@ namespace BetterArmStamina
                 "ADS arm stamina drain rate as a percentage of normal when mounted or using bipod. (e.g., 30 for 30%, 100 for 100%). Lower values mean less stamina drain when mounted."
             );
 
+            StandingStaminaDrain = Config.Bind(
+                "ADS Stamina Adjustment",
+                "StandingStaminaDrain",
+                100f,
+                "ADS arm stamina drain rate as a percentage of normal when standing (e.g., 100 for 100%, 120 for 120%). Default is 100%."
+            );
 
             if (ModEnabled != null) ModEnabled.SettingChanged += OnConfigChanged;
             if (ProneAdsDrainPercent != null) ProneAdsDrainPercent.SettingChanged += OnConfigChanged;
             if (CrouchAdsDrainPercent != null) CrouchAdsDrainPercent.SettingChanged += OnConfigChanged;
             if (MountedOrBipodAdsDrainPercent != null) MountedOrBipodAdsDrainPercent.SettingChanged += OnConfigChanged;
+            if (StandingStaminaDrain != null) StandingStaminaDrain.SettingChanged += OnConfigChanged;
 
             try
             {
@@ -79,7 +87,7 @@ namespace BetterArmStamina
             if (LogSource == null) return;
 
             LogSource.LogInfo("========== BETTER ARM STAMINA CONFIG ==========");
-            LogSource.LogInfo($"Core Mod: Enabled={ModEnabled?.Value ?? false} | ProneADS={ProneAdsDrainPercent?.Value ?? 0}% | CrouchADS={CrouchAdsDrainPercent?.Value ?? 0}% | Mounted/Bipod ADS={MountedOrBipodAdsDrainPercent?.Value ?? 0}%");
+            LogSource.LogInfo($"Core Mod: Enabled={ModEnabled?.Value ?? false} | Standing={StandingStaminaDrain?.Value ?? 100}% | ProneADS={ProneAdsDrainPercent?.Value ?? 0}% | CrouchADS={CrouchAdsDrainPercent?.Value ?? 0}% | Mounted/Bipod ADS={MountedOrBipodAdsDrainPercent?.Value ?? 0}%");
             LogSource.LogInfo("===============================================");
         }
     }
