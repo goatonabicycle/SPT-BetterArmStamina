@@ -77,7 +77,7 @@ namespace BetterArmStamina.Patches
                     // Start scanning for mount indicators
                     _scanAttemptsSinceKeyPress = 0;
                     ScanForMountIndicators();
-                    _nextScanTime = currentTime + 0.2f;
+                    _nextScanTime = currentTime + 1f;
                 }
             }
 
@@ -86,7 +86,7 @@ namespace BetterArmStamina.Patches
             {
                 _scanAttemptsSinceKeyPress++;
                 ScanForMountIndicators();
-                _nextScanTime = currentTime + 0.3f;
+                _nextScanTime = currentTime + 1f;
             }
 
             _vKeyWasPressedLastFrame = isVKeyPressed;
