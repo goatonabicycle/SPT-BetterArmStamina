@@ -94,13 +94,13 @@ namespace BetterArmStamina.Patches
         private static float GetMultiplier(bool isMounted, EPlayerPose pose)
         {
             if (isMounted)
-                return (Plugin.MountedOrBipodAdsDrainPercent?.Value ?? 30f) / 100f;
+                return (Plugin.MountedAdsStaminaDrain?.Value ?? 30f) / 100f;
 
             return pose switch
             {
-                EPlayerPose.Prone => (Plugin.ProneAdsDrainPercent?.Value ?? 30f) / 100f,
-                EPlayerPose.Duck => (Plugin.CrouchAdsDrainPercent?.Value ?? 60f) / 100f,
-                _ => (Plugin.StandingStaminaDrain?.Value ?? 100f) / 100f
+                EPlayerPose.Prone => (Plugin.ProneAdsStaminaDrain?.Value ?? 30f) / 100f,
+                EPlayerPose.Duck => (Plugin.CrouchingAdsStaminaDrain?.Value ?? 60f) / 100f,
+                _ => (Plugin.StandingAdsStaminaDrain?.Value ?? 100f) / 100f
             };
         }
 

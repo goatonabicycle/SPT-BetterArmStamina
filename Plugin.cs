@@ -10,58 +10,55 @@ namespace BetterArmStamina
     public class Plugin : BaseUnityPlugin
     {
         public static ManualLogSource? LogSource;
-
         public static ConfigEntry<bool>? ModEnabled;
-        public static ConfigEntry<float>? ProneAdsDrainPercent;
-        public static ConfigEntry<float>? CrouchAdsDrainPercent;
-        public static ConfigEntry<float>? MountedOrBipodAdsDrainPercent;
-        public static ConfigEntry<float>? StandingStaminaDrain;
+        public static ConfigEntry<float>? StandingAdsStaminaDrain;
+        public static ConfigEntry<float>? CrouchingAdsStaminaDrain;
+        public static ConfigEntry<float>? ProneAdsStaminaDrain;
+        public static ConfigEntry<float>? MountedAdsStaminaDrain;
 
         private void Awake()
         {
             LogSource = Logger;
-            LogSource.LogInfo("BetterArmStamina Plugin loading...");
-
-            ModEnabled = Config.Bind(
-                "General",
-                "Enabled",
+            LogSource.LogInfo("BetterArmStamina Plugin loading..."); ModEnabled = Config.Bind(
+                "1. General",
+                "Mod Enabled",
                 true,
-                "Should work or should not work."
+                "Enable or disable the entire mod."
             );
 
-            ProneAdsDrainPercent = Config.Bind(
-                "ADS Stamina Adjustment",
-                "ProneAdsDrainPercent",
-                30f,
-                "ADS arm stamina drain rate as a percentage of normal when prone. (e.g., 30 for 30%, 100 for 100%)."
-            );
-
-            CrouchAdsDrainPercent = Config.Bind(
-                "ADS Stamina Adjustment",
-                "CrouchAdsDrainPercent",
-                60f,
-                "ADS arm stamina drain rate as a percentage of normal when crouching. (e.g., 60 for 60%, 100 for 100%)."
-            );
-
-            MountedOrBipodAdsDrainPercent = Config.Bind(
-                "ADS Stamina Adjustment",
-                "MountedOrBipodAdsDrainPercent",
-                30f,
-                "ADS arm stamina drain rate as a percentage of normal when mounted or using bipod. (e.g., 30 for 30%, 100 for 100%). Lower values mean less stamina drain when mounted."
-            );
-
-            StandingStaminaDrain = Config.Bind(
-                "ADS Stamina Adjustment",
-                "StandingStaminaDrain",
+            StandingAdsStaminaDrain = Config.Bind(
+                "2. ADS Stamina Settings",
+                "Standing ADS Drain",
                 100f,
-                "ADS arm stamina drain rate as a percentage of normal when standing (e.g., 100 for 100%, 120 for 120%). Default is 100%."
+                "Stamina drain when aiming down sights while standing (percentage, default 100%)."
+            );
+
+            CrouchingAdsStaminaDrain = Config.Bind(
+                "2. ADS Stamina Settings",
+                "Crouching ADS Drain",
+                60f,
+                "Stamina drain when aiming down sights while crouching (percentage, default 60%)."
+            );
+
+            ProneAdsStaminaDrain = Config.Bind(
+                "2. ADS Stamina Settings",
+                "Prone ADS Drain",
+                30f,
+                "Stamina drain when aiming down sights while prone (percentage, default 30%)."
+            );
+
+            MountedAdsStaminaDrain = Config.Bind(
+                "2. ADS Stamina Settings",
+                "Mounted ADS Drain",
+                30f,
+                "Stamina drain when aiming down sights while mounted or using a bipod (percentage, default 30%)."
             );
 
             if (ModEnabled != null) ModEnabled.SettingChanged += OnConfigChanged;
-            if (ProneAdsDrainPercent != null) ProneAdsDrainPercent.SettingChanged += OnConfigChanged;
-            if (CrouchAdsDrainPercent != null) CrouchAdsDrainPercent.SettingChanged += OnConfigChanged;
-            if (MountedOrBipodAdsDrainPercent != null) MountedOrBipodAdsDrainPercent.SettingChanged += OnConfigChanged;
-            if (StandingStaminaDrain != null) StandingStaminaDrain.SettingChanged += OnConfigChanged;
+            if (StandingAdsStaminaDrain != null) StandingAdsStaminaDrain.SettingChanged += OnConfigChanged;
+            if (CrouchingAdsStaminaDrain != null) CrouchingAdsStaminaDrain.SettingChanged += OnConfigChanged;
+            if (ProneAdsStaminaDrain != null) ProneAdsStaminaDrain.SettingChanged += OnConfigChanged;
+            if (MountedAdsStaminaDrain != null) MountedAdsStaminaDrain.SettingChanged += OnConfigChanged;
 
             try
             {
@@ -85,9 +82,8 @@ namespace BetterArmStamina
         private void LogConfiguration()
         {
             if (LogSource == null) return;
-
             LogSource.LogInfo("========== BETTER ARM STAMINA CONFIG ==========");
-            LogSource.LogInfo($"Core Mod: Enabled={ModEnabled?.Value ?? false} | Standing={StandingStaminaDrain?.Value ?? 100}% | ProneADS={ProneAdsDrainPercent?.Value ?? 0}% | CrouchADS={CrouchAdsDrainPercent?.Value ?? 0}% | Mounted/Bipod ADS={MountedOrBipodAdsDrainPercent?.Value ?? 0}%");
+            LogSource.LogInfo($"Enabled: {ModEnabled?.Value ?? false} | Standing: {StandingAdsStaminaDrain?.Value ?? 100}% | Crouching: {CrouchingAdsStaminaDrain?.Value ?? 60}% | Prone: {ProneAdsStaminaDrain?.Value ?? 30}% | Mounted: {MountedAdsStaminaDrain?.Value ?? 30}%");
             LogSource.LogInfo("===============================================");
         }
     }
