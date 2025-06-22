@@ -31,7 +31,7 @@ namespace BetterArmStamina.Patches
             bool isModEnabled = Plugin.ModEnabled?.Value ?? false;
             if (!isModEnabled)
             {
-                UpdatePreviousStates(pwa.IsAiming, __instance.Pose, MountDetector.IsPlayerMounted());
+                UpdatePreviousStates(pwa.IsAiming, __instance.Pose, false);
                 return;
             }
 
