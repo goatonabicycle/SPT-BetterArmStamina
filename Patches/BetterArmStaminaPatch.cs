@@ -19,6 +19,7 @@ namespace BetterArmStamina.Patches
         private static EPlayerPose _lastPose = EPlayerPose.Stand;
         private static bool _wasMounted = false;
         private static int _frameCounter = 0;
+        private const float PERCENTAGE_DIVISOR = 100f;
 
         [PatchPrefix]
         static void Prefix(ref Player __instance)
@@ -29,15 +30,22 @@ namespace BetterArmStamina.Patches
             if (pwa == null) return;
 
             bool isModEnabled = Plugin.ModEnabled?.Value ?? false;
-            if (!isModEnabled)
-            {
-                UpdatePreviousStates(pwa.IsAiming, __instance.Pose, false);
-                return;
-            }
 
             bool isAiming = pwa.IsAiming;
             EPlayerPose currentPose = __instance.Pose;
-            bool isMounted = MountDetector.IsPlayerMounted();
+            bool isMounted = MountDetector.IsPlayerMounted(); // Called once
+
+            if (!isModEnabled)
+            {
+                // If mod was active and aiming, reset multiplier when disabled
+                if (_wasAiming)
+                {
+                    __instance.Physical.HandsStamina.Multiplier = 1.0f;
+                }
+                UpdatePreviousStates(isAiming, currentPose, isMounted);
+                return;
+            }
+
             _frameCounter++;
 
             // Debug logging every 2 seconds
@@ -52,19 +60,16 @@ namespace BetterArmStamina.Patches
             {
                 // Started aiming
                 ApplyMultiplier(__instance, isMounted, currentPose);
-                Plugin.LogSource?.LogInfo($"[ArmStamina] Started aiming - {(isMounted ? "Mounted" : currentPose.ToString())}");
             }
             else if (isAiming && (currentPose != _lastPose || isMounted != _wasMounted))
             {
                 // State changed while aiming
                 ApplyMultiplier(__instance, isMounted, currentPose);
-                Plugin.LogSource?.LogInfo($"[ArmStamina] State changed - {(isMounted ? "Mounted" : currentPose.ToString())}");
             }
             else if (!isAiming && _wasAiming)
             {
                 // Stopped aiming
                 __instance.Physical.HandsStamina.Multiplier = 1.0f;
-                Plugin.LogSource?.LogInfo("[ArmStamina] Stopped aiming");
             }
             else if (isAiming && _frameCounter % 60 == 0)
             {
@@ -94,13 +99,13 @@ namespace BetterArmStamina.Patches
         private static float GetMultiplier(bool isMounted, EPlayerPose pose)
         {
             if (isMounted)
-                return (Plugin.MountedAdsStaminaDrain?.Value ?? 30f) / 100f;
+                return (Plugin.MountedAdsStaminaDrain?.Value ?? 30f) / PERCENTAGE_DIVISOR;
 
             return pose switch
             {
-                EPlayerPose.Prone => (Plugin.ProneAdsStaminaDrain?.Value ?? 30f) / 100f,
-                EPlayerPose.Duck => (Plugin.CrouchingAdsStaminaDrain?.Value ?? 60f) / 100f,
-                _ => (Plugin.StandingAdsStaminaDrain?.Value ?? 100f) / 100f
+                EPlayerPose.Prone => (Plugin.ProneAdsStaminaDrain?.Value ?? 30f) / PERCENTAGE_DIVISOR,
+                EPlayerPose.Duck => (Plugin.CrouchingAdsStaminaDrain?.Value ?? 60f) / PERCENTAGE_DIVISOR,
+                _ => (Plugin.StandingAdsStaminaDrain?.Value ?? 100f) / PERCENTAGE_DIVISOR
             };
         }
 
